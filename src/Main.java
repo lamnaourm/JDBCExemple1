@@ -1,21 +1,28 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 import java.sql.PreparedStatement;
 
 public class Main {
 
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException {
 
 		// Chargement du driver
-		Class.forName("com.mysql.jdbc.Driver");
+		Properties props = new Properties();
+		props.load(new FileInputStream("database.properties"));
+		
+		Class.forName(props.getProperty("driver"));
 		
 		// Les informations de la connexion
-		String url = "jdbc:mysql://localhost:3306/dbemploys";
-		String user = "root";
-		String pwd = "";
+		String url = props.getProperty("url");
+		String user = props.getProperty("user");
+		String pwd = props.getProperty("pwd");
 				
 		// Creation de connection 
 		Connection conn = DriverManager.getConnection(url,user,pwd);
